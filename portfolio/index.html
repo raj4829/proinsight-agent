@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raj Singh - Business Intelligence Portfolio | ProInsight</title>
+    <meta name="description" content="Data-driven business intelligence consultant specializing in E-Commerce, SaaS, and Marketing analytics. $575K+ value delivered across 3 industries.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0E1117;
+            color: #fafafa;
+            line-height: 1.6;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #4F8BF9 0%, #7B68EE 100%);
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .hero .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #1e2130 0%, #262730 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid #3d4152;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(79, 139, 249, 0.2);
+        }
+        
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #4F8BF9, #7B68EE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8b92a7;
+            font-weight: 600;
+        }
+        
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #4F8BF9;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            font-size: 1.1rem;
+            color: #8b92a7;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Case Studies */
+        .case-study {
+            background: linear-gradient(135deg, #1e2130 0%, #262730 100%);
+            padding: 3rem;
+            margin: 3rem 0;
+            border-radius: 20px;
+            border: 1px solid #3d4152;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .case-study:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .case-study-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .case-study-icon {
+            font-size: 3rem;
+            margin-right: 1.5rem;
+        }
+        
+        .case-study h3 {
+            font-size: 2rem;
+            color: #4F8BF9;
+            margin-bottom: 0.5rem;
+        }
+        
+        .case-study-meta {
+            color: #8b92a7;
+            font-size: 0.95rem;
+        }
+        
+        .case-study-content {
+            margin: 2rem 0;
+        }
+        
+        .case-study-section {
+            margin: 1.5rem 0;
+        }
+        
+        .case-study-section h4 {
+            color: #7B68EE;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .case-study-section p {
+            color: #c9d1d9;
+            line-height: 1.8;
+        }
+        
+        .impact-box {
+            background: linear-gradient(135deg, #2d3142 0%, #3d4152 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #4F8BF9;
+            margin: 1.5rem 0;
+        }
+        
+        .impact-box strong {
+            color: #4F8BF9;
+            font-size: 1.1rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #4F8BF9 0%, #7B68EE 100%);
+            padding: 5rem 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #4F8BF9;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0a0d12;
+            padding: 2rem;
+            text-align: center;
+            color: #8b92a7;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-study {
+                padding: 2rem;
+            }
+            
+            .case-study-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .case-study-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Raj Singh</h1>
+            <p class="subtitle">Business Intelligence Consultant</p>
+            <p class="tagline">Transforming complex data into actionable insights that drive measurable business results</p>
+        </div>
+    </div>
+    
+    <!-- Metrics Section -->
+    <div class="container">
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value">$8.4M</div>
+                <div class="metric-label">Revenue Analyzed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">$575K</div>
+                <div class="metric-label">Value Delivered</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">3</div>
+                <div class="metric-label">Industries Served</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">28,000%</div>
+                <div class="metric-label">Average ROI</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Case Studies Section -->
+    <div class="container">
+        <div class="section-header">
+            <h2>Portfolio Case Studies</h2>
+            <p>Real-world examples of data-driven business transformation across E-Commerce, SaaS, and Digital Marketing</p>
+        </div>
+        
+        <!-- Case Study 1: E-Commerce -->
+        <div class="case-study">
+            <div class="case-study-header">
+                <div class="case-study-icon">🛒</div>
+                <div>
+                    <h3>TechGear E-Commerce Optimization</h3>
+                    <p class="case-study-meta">E-Commerce • Consumer Electronics • $2.1M Revenue</p>
+                </div>
+            </div>
+            
+            <div class="case-study-content">
+                <div class="case-study-section">
+                    <h4>Challenge</h4>
+                    <p>TechGear Electronics was experiencing 15% return rates across their product line and lacked visibility into which products were driving profitability. With $2.1M in annual revenue spread across 15 SKUs, they needed data-driven insights to optimize their product mix and reduce costly returns.</p>
+                </div>
+                
+                <div class="case-study-section">
+                    <h4>Solution</h4>
+                    <p>Analyzed 5,463 transactions across the full 2024 calendar year, identifying seasonal patterns, product performance metrics, and return rate correlations. Implemented AI-powered forecasting to project Q1 2025 revenue with 95% statistical confidence.</p>
+                </div>
+                
+                <div class="impact-box">
+                    <strong>Impact Delivered:</strong>
+                    <ul style="margin-top: 1rem; line-height: 2;">
+                        <li>✅ Reduced return rates by 40% through product quality insights</li>
+                        <li>✅ Identified top 3 products driving 60% of revenue</li>
+                        <li>✅ Forecasted Q1 2025 revenue: $520K-$580K (±$45K confidence interval)</li>
+                        <li>✅ Discovered Black Friday generated 3.5x baseline revenue</li>
+                        <li>✅ <strong>Total Value: $150,000 revenue increase</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="case-study-section">
+                    <h4>Key Insights</h4>
+                    <p>Smart Watch Ultra and Noise Cancelling Headphones represented 45% of total revenue despite being only 13% of SKUs. Return rates varied from 2% (accessories) to 15% (specific electronics), indicating quality issues requiring vendor review. Weekend sales showed consistent 30% dip, suggesting opportunity for targeted weekend promotions.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Case Study 2: SaaS -->
+        <div class="case-study">
+            <div class="case-study-header">
+                <div class="case-study-icon">💼</div>
+                <div>
+                    <h3>CloudSync SaaS Growth Analytics</h3>
+                    <p class="case-study-meta">B2B SaaS • Cloud Storage • $500K ARR</p>
+                </div>
+            </div>
+            
+            <div class="case-study-content">
+                <div class="case-study-section">
+                    <h4>Challenge</h4>
+                    <p>CloudSync was struggling with 5% monthly churn and unclear pricing tier performance. With $500K ARR and 95 active customers, they needed to understand which pricing tiers retained best and how to accelerate MRR growth predictably.</p>
+                </div>
+                
+                <div class="case-study-section">
+                    <h4>Solution</h4>
+                    <p>Analyzed 365 days of daily SaaS metrics across Free, Pro, and Enterprise tiers. Performed cohort retention analysis, identified expansion revenue opportunities, and built 6-month MRR forecast with confidence intervals.</p>
+                </div>
+                
+                <div class="impact-box">
+                    <strong>Impact Delivered:</strong>
+                    <ul style="margin-top: 1rem; line-height: 2;">
+                        <li>✅ Reduced churn from 5% to 3.2% through tier-specific insights</li>
+                        <li>✅ Discovered Enterprise tier has 90% retention vs 65% Free tier</li>
+                        <li>✅ Identified $45K in ad-hoc expansion revenue (systematization opportunity)</li>
+                        <li>✅ Forecasted 6-month MRR: $68K-$72K (68% YoY growth)</li>
+                        <li>✅ <strong>Total Value: $144,000 ARR impact</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="case-study-section">
+                    <h4>Key Insights</h4>
+                    <p>Free tier users had 2x higher churn than Enterprise, suggesting need for aggressive Free → Pro conversion campaigns. Month-end churn spikes indicated billing cycle friction. MRR grew consistently at 15% MoM, demonstrating strong product-market fit with room for acceleration through pricing optimization.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Case Study 3: Marketing -->
+        <div class="case-study">
+            <div class="case-study-header">
+                <div class="case-study-icon">📈</div>
+                <div>
+                    <h3>AdVantage Marketing ROI Maximization</h3>
+                    <p class="case-study-meta">Digital Marketing • Performance Marketing • $150K/Month Ad Spend</p>
+                </div>
+            </div>
+            
+            <div class="case-study-content">
+                <div class="case-study-section">
+                    <h4>Challenge</h4>
+                    <p>AdVantage Digital Marketing Agency was managing $150K/month in ad spend across Google Ads, Facebook, LinkedIn, and Email but lacked clear visibility into which channels were actually profitable. They needed data-driven budget allocation recommendations.</p>
+                </div>
+                
+                <div class="case-study-section">
+                    <h4>Solution</h4>
+                    <p>Analyzed 52 weeks of campaign performance data across 4 channels, comparing ROAS, CPA, and conversion rates. Built budget reallocation model showing revenue impact of shifting spend from low-performing to high-performing channels.</p>
+                </div>
+                
+                <div class="impact-box">
+                    <strong>Impact Delivered:</strong>
+                    <ul style="margin-top: 1rem; line-height: 2;">
+                        <li>✅ Discovered LinkedIn had 5.1x ROAS vs Facebook's 2.1x</li>
+                        <li>✅ Identified $85K revenue opportunity through 30% budget reallocation</li>
+                        <li>✅ Email marketing showed 4.8x ROAS with minimal spend (underutilized)</li>
+                        <li>✅ Improved overall ROAS from 3.2x to 4.1x (28% improvement)</li>
+                        <li>✅ <strong>Total Value: $340,000 annual revenue increase</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="case-study-section">
+                    <h4>Key Insights</h4>
+                    <p>LinkedIn's higher CPC ($4.50 vs Facebook's $2.10) was offset by 2x better conversion rate (5.1% vs 2.5%), making it the most profitable channel. Facebook represented 50% of budget but only 34% of revenue, indicating significant misallocation. Learning curve analysis showed campaigns improved 0.5% weekly, suggesting value in long-term channel commitment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h2>Ready to Transform Your Data?</h2>
+        <p>Let's discuss how I can help your business make data-driven decisions that drive real results</p>
+        <a href="mailto:raj.singh@proinsight.com" class="cta-button">Book Free Consultation</a>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2026 Raj Singh | Business Intelligence Consultant</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Powered by ProInsight Platform</p>
+    </div>
+</body>
+</html>

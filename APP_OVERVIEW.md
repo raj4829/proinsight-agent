@@ -25,8 +25,9 @@ A high-level dashboard that synthesizes all active data streams.
 
 ### 2. 🧪 Data Lab (Expert Sandbox)
 Deep-dive inspection tools for technical users.
-- **Preview & Distribution**: Analyze data density and statistical curves.
-- **Automated Cleaning**: One-click missing value removal and categorical optimization.
+- **Preview & Distribution**: Analyze data density with statistical curves, Mean/Median markers, and marginal box plots.
+- **Meta-Analysis**: One-click **Correlation Matrix** to identify hidden relationships between business variables.
+- **Automated Cleaning**: One-click missing value removal and IQR-based outlier detection.
 
 ### 3. 💬 Deep Query (Analytical Engine)
 Ask any business question in plain English. Now with **Smart Suggestions** to guide users toward high-value insights.

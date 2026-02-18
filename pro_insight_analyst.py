@@ -576,8 +576,9 @@ if (st.session_state.get("agent") is None or
         instructions=[
             f"{schema_desc}",
             "Write optimized DuckDB SQL queries with proper aggregation.",
+            "CAPABILITY BOUNDARY: You ONLY have access to the tables listed above. You CANNOT see future forecasts as tables.",
+            "FORECASTING: If a user asks for 'forecasts', 'future predictions', or 'next 30 days', explain that these are generated in the specialized '🔮 Forecasting' tab using advanced trend modeling.",
             "JOIN LOGIC: You can join multiple tables using standard JOIN syntax.",
-            "Note: 'portfolio_saas_cloudsync_2024' (SaaS metrics), 'portfolio_marketing_advantage_2024' (Ad spend), 'portfolio_ecommerce_techgear_2024' (Sales).",
             "CRITICAL: Column names with spaces MUST be wrapped in double quotes (e.g., \"Units Sold\").",
             "Always wrap SQL in ```sql``` code blocks.",
             "Provide clear, professional explanations of query results in a consulting tone."
@@ -686,13 +687,43 @@ with tab_datalab:
             num_cols = df_lab.select_dtypes(include=['number']).columns
             if len(num_cols) > 0:
                 scol = st.selectbox("Analyze Distribution of:", num_cols)
-                fig = px.histogram(df_lab, x=scol, template="plotly_dark", color_discrete_sequence=['#0EA5E9'])
+                
+                # Optimized Plot with Marginals
+                mean_val = df_lab[scol].mean()
+                median_val = df_lab[scol].median()
+                
+                fig = px.histogram(
+                    df_lab, 
+                    x=scol, 
+                    marginal="box",
+                    template="plotly_dark", 
+                    color_discrete_sequence=['#0EA5E9'],
+                    title=f"Statistical Distribution: {scol}"
+                )
+                fig.add_vline(x=mean_val, line_dash="dash", line_color="#10B981", annotation_text="Mean")
+                fig.add_vline(x=median_val, line_dash="dot", line_color="#F59E0B", annotation_text="Median")
+                
                 fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)')
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning("No numeric columns found for distribution analysis.")
         
         with lab_sub3:
+            st.markdown("#### Meta-Analysis: Correlation Matrix")
+            if st.button("📈 Run Correlation Analysis", use_container_width=True):
+                num_df = df_lab.select_dtypes(include=['number'])
+                if len(num_df.columns) > 1:
+                    corr = num_df.corr()
+                    fig = px.imshow(corr, text_auto=True, aspect="auto", 
+                                   color_continuous_scale='RdBu_r', 
+                                   template="plotly_dark",
+                                   title="Variable Correlation Matrix")
+                    st.plotly_chart(fig, use_container_width=True)
+                    st.info("💡 Values closer to 1 or -1 indicate strong relationships.")
+                else:
+                    st.warning("Needs at least 2 numeric columns for correlation analysis.")
+            
+            st.markdown("---")
             st.markdown("#### Essential Data Operations")
             col_op1, col_op2 = st.columns(2)
             if col_op1.button("Drop Missing Values"):
@@ -727,21 +758,27 @@ with tab_query:
     col_input, col_output = st.columns([1, 2])
     
     with col_input:
+        # State-bound text area
+        if "query_input" not in st.session_state:
+            st.session_state["query_input"] = ""
+            
         question = st.text_area("Ask a question about your data:", 
                                height=120, 
+                               value=st.session_state["query_input"],
                                placeholder="e.g., 'Compare return rates for products over $100 against our top sellers.'")
         
-        # Suggested Queries based on context
+        # Suggested Queries 
         st.markdown("⭐ **Suggested Insights**")
         example_queries = [
             "What is our total revenue growth performance?",
             "Identify top 5 performing channels by efficiency.",
-            "Compare actuals vs forecasts for the next 30 days."
+            "Compare ROI across all available marketing datasets."
         ]
         
         for eq in example_queries:
             if st.button(eq, key=f"btn_{eq}", use_container_width=True):
-                question = eq # This wont actually update the text area without a rerun, but we can handle it
+                st.session_state["query_input"] = eq
+                st.rerun()
         
         if st.button("🚀 Run Analytical Engine", type="primary", use_container_width=True):
             with st.spinner("🤖 AI is analyzing your request..."):

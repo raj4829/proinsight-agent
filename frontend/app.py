@@ -89,7 +89,59 @@ st.markdown("# 🚀 ProInsight SaaS")
 st.markdown("*Premium Executive Intelligence & AI Team Synthesis*")
 st.markdown("---")
 
-tab_query, tab_reports, tab_manage = st.tabs(["💬 AI Team Consultation", "📑 Enterprise Reports", "🛠️ System Status"])
+tab_query, tab_strategy, tab_reports, tab_manage = st.tabs([
+    "💬 AI Team Consultation", "🎯 Strategy Hub", "📑 Enterprise Reports", "🛠️ System Status"
+])
+
+with tab_strategy:
+    st.markdown("### 🎯 Strategic Channel Hub")
+    st.markdown("*Real-time comparative analysis of marketing efficiency across multiple data streams.*")
+    
+    if st.button("📈 Run Comparative Analysis", use_container_width=True):
+        try:
+            res = requests.get(f"{BACKEND_URL}/v1/analytics/comparative")
+            if res.status_code == 200:
+                data = res.json()["data"]
+                if data:
+                    df_comp = pd.DataFrame(data)
+                    
+                    # 1. Visualization
+                    fig = px.bar(df_comp, x="channel", y="roas", 
+                                color="roi", text="roas",
+                                title="Marketing Efficiency by Channel (ROAS vs ROI)",
+                                template="plotly_dark",
+                                color_continuous_scale="Viridis")
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    # 2. Winning Channels Grid
+                    st.markdown("#### 🏆 Top Performing Channels")
+                    cols = st.columns(len(data))
+                    for i, item in enumerate(data):
+                        with cols[i]:
+                            st.markdown(f"""
+                            <div class="metric-card">
+                                <div class="metric-label">{item['channel']}</div>
+                                <div class="metric-value">{item['roas']}x</div>
+                                <div style="color: var(--accent); font-size: 0.9rem;">ROI: {item['roi']}%</div>
+                            </div>
+                            """, unsafe_allow_html=True)
+                    
+                    # 3. AI Winning Insights
+                    winning_channel = df_comp.loc[df_comp['roas'].idxmax()]['channel']
+                    st.markdown(f"""
+                    <div class="insight-box" style="border-left-color: var(--accent);">
+                        <strong>🏆 Winning Strategy Identified</strong><br>
+                        The AI agent has identified <b>{winning_channel}</b> as your most efficient scale-up point with a ROAS of 
+                        <b>{df_comp['roas'].max()}x</b>. Reallocating budget from underperforming channels is recommended for 
+                        immediate ROI acceleration.
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.warning("No comparable marketing data (Revenue + Cost) found in current tables.")
+            else:
+                st.error("Backend failed to process analysis.")
+        except Exception as e:
+            st.error(f"Analysis failed: {e}")
 
 with tab_query:
     col_in, col_out = st.columns([1, 2])

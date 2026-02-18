@@ -114,6 +114,42 @@ async def upload_dataset(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/v1/analytics/comparative")
+async def get_comparative_analysis():
+    """Performs cross-table marketing efficiency analysis."""
+    con = get_con()
+    tables = con.execute("SHOW TABLES").fetchall()
+    table_names = [t[0] for t in tables]
+    
+    analysis = []
+    for name in table_names:
+        df = con.execute(f"SELECT * FROM {name} LIMIT 1000").df()
+        low_cols = [c.lower() for c in df.columns]
+        
+        # Look for marketing/sales data
+        revenue = None
+        cost = None
+        
+        for i, col in enumerate(df.columns):
+            c = col.lower()
+            if any(x in c for x in ['revenue', 'sales_amount', 'total_sales']):
+                revenue = float(df[col].sum())
+            if any(x in c for x in ['cost', 'spend', 'budget', 'ad_spend']):
+                cost = float(df[col].sum())
+        
+        if revenue is not None and cost is not None and cost > 0:
+            roas = revenue / cost
+            roi = ((revenue - cost) / cost) * 100
+            analysis.append({
+                "channel": name.replace("portfolio_", "").replace("_2024", "").title(),
+                "revenue": revenue,
+                "cost": cost,
+                "roas": round(roas, 2),
+                "roi": round(roi, 1)
+            })
+            
+    return {"status": "success", "data": analysis}
+
 @app.post("/v1/agent/analyze", response_model=QueryResponse)
 async def analyze_query(request: QueryRequest):
     """Main SaaS endpoint for AI-powered analytics."""

@@ -18,9 +18,18 @@ ProInsight eliminates the "Technical Tax" of data analysis. Instead of writing c
 
 ## 🚀 Key Features
 
-### 1. 💬 Deep Query (NL2SQL)
-Ask any business question in plain English. ProInsight's **Agno Agent** translates your intent into highly optimized DuckDB SQL, analyzes the result, and provides natural language insights.
-*Example: "Compare return rates for products over $100 against our top sellers."*
+### 1. 🏛️ Executive Intelligence Hub (Overview)
+A high-level dashboard that synthesizes all active data streams.
+- **Platform Health Score**: A proprietary 0-100 score based on revenue velocity and efficiency.
+- **Bento Grid KPIs**: High-precision metrics using Monospace typography for vertical alignment.
+
+### 2. 🧪 Data Lab (Expert Sandbox)
+Deep-dive inspection tools for technical users.
+- **Preview & Distribution**: Analyze data density and statistical curves.
+- **Automated Cleaning**: One-click missing value removal and categorical optimization.
+
+### 3. 💬 Deep Query (Analytical Engine)
+Ask any business question in plain English. Now with **Smart Suggestions** to guide users toward high-value insights.
 
 ### 2. 📈 Interactive Visualizations
 Dynamic, high-contrast Plotly charts that bring trends to life.

@@ -16,83 +16,115 @@ import base64
 # ---------- Configuration ----------
 CUSTOM_CSS = """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@500;700&display=swap');
     
+    :root {
+        --primary: #0EA5E9;
+        --secondary: #0F172A;
+        --accent: #10B981;
+        --bg: #0B0E14;
+        --surface: #161B22;
+        --border: #30363D;
+        --text: #F0F6FC;
+        --text-muted: #8B949E;
+    }
+
     .stApp { 
-        background: linear-gradient(135deg, #0E1117 0%, #1a1d29 100%);
-        color: #FAFAFA; 
+        background-color: var(--bg);
+        color: var(--text); 
         font-family: 'Inter', sans-serif; 
     }
+    
     .stSidebar { 
-        background: linear-gradient(180deg, #1e2130 0%, #262730 100%);
-        border-right: 1px solid #2d3142;
+        background-color: var(--secondary);
+        border-right: 1px solid var(--border);
     }
+
     h1 { 
-        background: linear-gradient(90deg, #4F8BF9 0%, #7B68EE 100%);
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(90deg, #0EA5E9 0%, #38BDF8 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-weight: 700;
-        font-size: 2.5rem;
+        font-weight: 800;
+        font-size: 2.8rem;
+        letter-spacing: -0.02em;
     }
+
     h2, h3 { 
-        color: #4F8BF9; 
+        color: var(--primary); 
         font-weight: 600;
+        letter-spacing: -0.01em;
     }
+
     .stButton>button { 
-        background: linear-gradient(90deg, #4F8BF9 0%, #7B68EE 100%);
+        background: var(--primary);
         color: white; 
-        border-radius: 12px; 
+        border-radius: 8px; 
         font-weight: 600;
         border: none;
-        padding: 0.75rem 2rem;
-        box-shadow: 0 4px 15px rgba(79, 139, 249, 0.3);
-        transition: all 0.3s ease;
+        padding: 0.6rem 1.5rem;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer !important;
     }
+
     .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(79, 139, 249, 0.4);
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
     }
+
     .stTextInput>div>div>input { 
-        border-radius: 10px;
-        border: 1px solid #3d4152;
-        background: #1e2130;
-        color: #fafafa;
-    }
-    .metric-card {
-        background: linear-gradient(135deg, #1e2130 0%, #262730 100%);
-        border-radius: 15px;
-        padding: 1.5rem;
-        border: 1px solid #3d4152;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    .metric-value {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(90deg, #4F8BF9 0%, #7B68EE 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    .metric-label {
-        font-size: 0.9rem;
-        color: #8b92a7;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .insight-box {
-        background: linear-gradient(135deg, #2d3142 0%, #3d4152 100%);
-        border-left: 4px solid #4F8BF9;
-        padding: 1rem;
         border-radius: 8px;
-        margin: 1rem 0;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
     }
+
+    /* Bento Grid Metric Cards */
+    .metric-card {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        transition: border-color 0.2s ease;
+    }
+    
+    .metric-card:hover {
+        border-color: var(--primary);
+    }
+
+    .metric-value {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: var(--primary);
+        line-height: 1;
+        margin: 0.5rem 0;
+    }
+
+    .metric-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    .insight-box {
+        background: rgba(14, 165, 233, 0.05);
+        border-left: 3px solid var(--primary);
+        padding: 1.25rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
     /* Mobile Responsiveness */
     @media (max-width: 600px) {
-        h1 { font-size: 1.8rem !important; }
-        h2 { font-size: 1.4rem !important; }
-        .metric-value { font-size: 1.8rem !important; }
+        h1 { font-size: 2rem !important; }
+        .metric-value { font-size: 2rem !important; }
         .stButton>button { width: 100%; }
-        .block-container { padding-left: 1rem; padding-right: 1rem; }
-        /* Ensure columns stack on mobile */
         [data-testid="column"] {
             width: 100% !important;
             flex: 1 1 100% !important;

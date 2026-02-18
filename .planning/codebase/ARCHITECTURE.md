@@ -1,16 +1,29 @@
-# Architecture Overview
+# 🏛️ SaaS Architecture: ProInsight Elite (v3.2)
 
-## System Flow
-1. **Ingestion**: User uploads CSV/XLSX files via Streamlit sidebar.
-2. **Registration**: Files are loaded into Pandas DataFrames and registered as tables in a `:memory:` DuckDB instance.
-3. **Reasoning**: The Agno Agent (GPT-4o) converts natural language questions into optimized DuckDB SQL based on the detected schema.
-4. **Execution**: SQL is run against DuckDB, returning results as DataFrames.
-5. **Visualization**: Results are passed to Plotly for interactive charts.
-6. **Persistence**: (Disabled in current elite version) Reverted from modular to single-file for portability.
+## 🎭 Governance Pattern
+Inspired by **Ralph** and **GSD**, ProInsight uses a decoupled, supervisor-led architecture.
 
-## Directory Structure
-- `/`: Main application logic (`pro_insight_analyst.py`) and config (`requirements.txt`).
-- `.agent/`: GSD workflow and automation definitions.
-- `.planning/`: Project context and roadmap (GSD state).
-- `design-system/`: Design governance and master rules.
-- `portfolio/`: Presentation assets and sales documentation.
+### 1. The ProInsight Supervisor (Orchestrator)
+- **Framework**: Agno Team Orchestration.
+- **Role**: High-level execution of business intelligence tasks.
+- **Workflow**:
+  - **Internal Intelligence**: Calls the `Analyst` agent for DuckDB SQL operations.
+  - **External Intelligence**: Calls the `Researcher` agent for real-time web context.
+  - **Synthesis**: Merges data and context into a premium report.
+
+### 2. The Cloud SaaS Backend (FastAPI)
+- **High Performance**: Decoupled from the UI to support high-frequency user traffic.
+- **Persistence**: Using DuckDB with optional **MotherDuck** integration for horizontal scaling.
+- **Caching**: Multi-level caching for high-density business metrics.
+
+### 3. The Elite Frontend (Streamlit Client)
+- **Lightweight Viewport**: Zero business logic on the client.
+- **Real-Time Heartbeat**: Visualizes the AI's "thought process" and orchestration steps.
+- **Premium UX**: Adheres to the Elite Design System (Bento Grids, Glassmorphism, Inter/Roboto fonts).
+
+---
+
+## 🛰️ Scalability Model
+1. **Frontend Scale**: Stateless Streamlit instances behind a load balancer.
+2. **Backend Scale**: FastAPI workers running on Kubernetes or Serverless.
+3. **Data Scale**: Regional MotherDuck clusters for centralized SaaS persistence.

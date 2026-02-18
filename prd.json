@@ -45,18 +45,31 @@
             "notes": ""
         },
         {
+            "id": "EP-004",
+            "title": "Query Engine & Data Lab Precision",
+            "description": "Optimize AI response boundaries and statistical visualizations.",
+            "acceptanceCriteria": [
+                "Agent clearly distinguishes between SQL Querying and Forecasting",
+                "Distribution charts include Mean/Median markers and marginal box plots",
+                "Suggested insights properly populate the query field on click"
+            ],
+            "priority": 1,
+            "passes": true,
+            "notes": "Fixed forecast-table hallucination and enhanced Data Lab visual clarity."
+        },
+        {
             "id": "EP-005",
             "title": "SaaS Refactoring (100K Scale)",
-            "description": "Port project to Client-Server architecture (FastAPI + Streamlit).",
+            "description": "Port project to Client-Server architecture (FastAPI + Streamlit) with GSD/Ralph patterns.",
             "acceptanceCriteria": [
-                "Backend decoupled into FastAPI server",
-                "Frontend refactored to consume JSON API",
-                "Agno Agent Team implemented (Analyst + Researcher)",
+                "Backend decoupled into FastAPI server with Ralph-style Supervisor",
+                "Frontend refactored to consume JSON API with Elite UI",
+                "Agno Agent Team implemented (Analyst + Researcher + Supervisor)",
                 "Support for MotherDuck persistent connections"
             ],
             "priority": 1,
             "passes": true,
-            "notes": "Refactored to SaaS architecture with decoupled layers."
+            "notes": "Refactored to SaaS architecture with decoupled layers and elite governance."
         }
     ]
 }

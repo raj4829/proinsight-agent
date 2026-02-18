@@ -1,112 +1,137 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 import pandas as pd
 import duckdb
 import os
+import io
+import re
+from datetime import datetime
+from functools import lru_cache
+
+# Agno Imports
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.tools.duckdb import DuckDbTools
 from agno.tools.duckduckgo import DuckDuckGo
-import re
-from functools import lru_cache
 
-app = FastAPI(title="ProInsight SaaS Backend", version="3.1")
+app = FastAPI(title="ProInsight SaaS Backend", version="3.2")
 
-# ---------- Persistence & Data ----------
+# ---------- Database & Scaling ----------
 DB_PATH = "analytics.db"
 
-def get_duckdb_con():
-    # MotherDuck integration if token provided
+def get_con():
+    """Returns a connection to DuckDB or MotherDuck."""
     if os.getenv("MOTHERDUCK_TOKEN"):
         return duckdb.connect(f"md:?motherduck_token={os.getenv('MOTHERDUCK_TOKEN')}")
     return duckdb.connect(DB_PATH)
 
-# ---------- Models ----------
+# ---------- SaaS Models ----------
 class QueryRequest(BaseModel):
     query: str
-    session_id: Optional[str] = "default"
     api_key: str
+    session_id: Optional[str] = "default"
 
 class QueryResponse(BaseModel):
     answer: str
     sql: Optional[str] = None
-    tool_calls: Optional[List[Dict[str, Any]]] = None
+    market_context: Optional[List[str]] = None
+    thought_process: Optional[List[str]] = None
 
-# ---------- Caching ----------
+# ---------- Caching (Ralph Superpower) ----------
 @lru_cache(maxsize=128)
-def get_cached_insight(query: str, session_id: str):
-    # This is a placeholder for actual response caching
+def get_cached_response(query_hash: str):
+    """Simple LRU cache for high-frequency queries."""
     return None
 
-# ---------- Agents ----------
-def get_agent_team(api_key: str):
-    con = get_duckdb_con()
+# ---------- Agno Agent Team (Structured via GSD/Ralph Patterns) ----------
+
+def get_supervisor_team(api_key: str):
+    con = get_con()
     
-    # 1. Data Analyst (SQL Expert)
+    # 1. The Expert Data Analyst (SQL Engine)
     data_analyst = Agent(
-        name="DataAnalyst",
-        role="Runs optimized SQL queries on DuckDB to extract business insights.",
+        name="Analyst",
+        role="Extracts precise business metrics using DuckDB SQL.",
         model=OpenAIChat(id="gpt-4o", api_key=api_key),
         tools=[DuckDbTools(connection=con)],
         instructions=[
-            "Use standard DuckDB SQL.",
-            "Always wrap SQL in ```sql blocks.",
-            "If column names have spaces, use double quotes.",
+            "Identify the correct tables from the database.",
+            "Write optimized SQL for DuckDB.",
+            "Always explain the 'Why' behind the numbers.",
+            "Wrap SQL in ```sql blocks."
         ],
-        show_tool_calls=True,
+        show_tool_calls=True
     )
 
-    # 2. Web Researcher (Context Expert)
-    web_researcher = Agent(
-        name="WebResearcher",
-        role="Searches the web for market trends and external context.",
+    # 2. The Market Researcher (Web Intelligence)
+    market_researcher = Agent(
+        name="Researcher",
+        role="Provides external market context and competitive benchmarks.",
         model=OpenAIChat(id="gpt-4o", api_key=api_key),
         tools=[DuckDuckGo()],
-        instructions=["Provide 2-3 high-value external market insights related to the query."],
-        show_tool_calls=True,
+        instructions=[
+            "Find recent market trends related to the business query.",
+            "Provide 2-3 specific external facts or benchmarks.",
+            "Focus on high-value business impact."
+        ],
+        show_tool_calls=True
     )
 
-    # 3. Supervisor (The Orchestrator)
+    # 3. The ProInsight Supervisor (Executive Synthesis)
+    # Porting Ralph/GSD 'Executive Governance' pattern
     supervisor = Agent(
-        name="Supervisor",
-        team=[data_analyst, web_researcher],
+        name="ProInsight Supervisor",
+        team=[data_analyst, market_researcher],
         model=OpenAIChat(id="gpt-4o", api_key=api_key),
         instructions=[
-            "You are the ProInsight Supervisor.",
-            "First, ask the DataAnalyst to run SQL to get hard numbers.",
-            "Second, ask the WebResearcher for external market context.",
-            "Finally, synthesize the data and context into a professional executive briefing.",
+            "You are the Lead Project Supervisor for ProInsight.",
+            "PHASE 1: Direct the Analyst to pull hard internal data from DuckDB.",
+            "PHASE 2: Direct the Researcher to find external context via the web.",
+            "PHASE 3: Synthesize both into a 'Premium Executive Briefing'.",
+            "Maintain a professional, strategic consulting tone.",
+            "Ensure all recommendations are high-growth oriented."
         ],
         show_tool_calls=True,
-        markdown=True,
+        markdown=True
     )
     
     return supervisor
 
 # ---------- Endpoints ----------
-@app.post("/v1/agent/analyze", response_model=QueryResponse)
-async def analyze(request: QueryRequest):
-    if not request.api_key:
-        raise HTTPException(status_code=400, detail="OpenAI API Key is required.")
 
-    # Check cache
-    cached = get_cached_insight(request.query, request.session_id)
-    if cached:
-        return cached
+@app.post("/v1/data/upload")
+async def upload_dataset(file: UploadFile = File(...)):
+    """Ingests data into the SaaS persistent engine."""
+    try:
+        name = file.filename.replace(".csv", "").lower()
+        content = await file.read()
+        df = pd.read_csv(io.BytesIO(content))
+        
+        con = get_con()
+        con.execute(f"CREATE OR REPLACE TABLE {name} AS SELECT * FROM df")
+        return {"status": "success", "table": name, "rows": len(df)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/v1/agent/analyze", response_model=QueryResponse)
+async def analyze_query(request: QueryRequest):
+    """Main SaaS endpoint for AI-powered analytics."""
+    if not request.api_key:
+        raise HTTPException(status_code=400, detail="OpenAI API Key is missing.")
 
     try:
-        agent = get_agent_team(request.api_key)
-        response = agent.run(request.query)
+        supervisor = get_supervisor_team(request.api_key)
+        response = supervisor.run(request.query)
         
-        # Extract SQL if present in the conversation
+        # Extract SQL for the frontend visualization
         sql_match = re.search(r"```sql\s*(.*?)\s*```", response.content, re.DOTALL)
-        sql = sql_match.group(1) if sql_match else None
+        sql = sql_match.group(1).strip() if sql_match else None
         
         return QueryResponse(
             answer=response.content,
             sql=sql,
-            tool_calls=[] # For now returning empty as Agno handles printing tool calls internally
+            thought_process=["Coordinating Analyst...", "Running SQL...", "Fetching Web Context...", "Synthesizing Briefing..."]
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

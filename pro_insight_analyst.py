@@ -557,32 +557,34 @@ if not st.session_state.get("openai_key"):
     st.warning("⚠️ Please enter your OpenAI API Key in the sidebar to begin.")
     st.stop()
 
-# Initialize Agent
-if st.session_state.get("agent") is None or st.session_state["datasets"]:
+# Initialize Agent with Schema Awareness
+datasets_hash = list(st.session_state["datasets"].keys())
+if (st.session_state.get("agent") is None or 
+    st.session_state.get("last_datasets_hash") != datasets_hash):
+    
     schema_desc = "Available Tables:\n"
     for name, df in st.session_state["datasets"].items():
         cols_formatted = []
         for col in df.columns:
-            if ' ' in col:
-                cols_formatted.append(f'"{col}"')
-            else:
-                cols_formatted.append(col)
+            if ' ' in col: cols_formatted.append(f'"{col}"')
+            else: cols_formatted.append(col)
         schema_desc += f"- Table '{name}': Columns [{', '.join(cols_formatted)}]\n"
     
     st.session_state["agent"] = Agent(
         model=OpenAIChat(id="gpt-4o", api_key=st.session_state["openai_key"]),
-        description="You are an elite Data Architect and Business Intelligence expert specializing in DuckDB.",
+        description="You are an elite Business Intelligence Consultant and DuckDB Expert.",
         instructions=[
             f"{schema_desc}",
-            "Write optimized DuckDB SQL queries with proper indexing and aggregation.",
+            "Write optimized DuckDB SQL queries with proper aggregation.",
+            "JOIN LOGIC: You can join multiple tables using standard JOIN syntax.",
+            "Note: 'portfolio_saas_cloudsync_2024' (SaaS metrics), 'portfolio_marketing_advantage_2024' (Ad spend), 'portfolio_ecommerce_techgear_2024' (Sales).",
             "CRITICAL: Column names with spaces MUST be wrapped in double quotes (e.g., \"Units Sold\").",
-            "Use descriptive table aliases (e.g., ssd for sample_sales_data).",
-            "Include comments in SQL for complex queries.",
             "Always wrap SQL in ```sql``` code blocks.",
-            "Provide brief explanations of query logic when relevant."
+            "Provide clear, professional explanations of query results in a consulting tone."
         ],
         markdown=True
     )
+    st.session_state["last_datasets_hash"] = datasets_hash
 
 agent = st.session_state["agent"]
 

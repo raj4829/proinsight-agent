@@ -92,17 +92,17 @@ Instantly generate proof-of-work for consulting clients by exporting full analys
 
 ---
 
-## 🛠️ Technical Stack
+## 🛠️ SaaS Technical Stack (v3.1)
 
-| Component | Technology | Role |
+| Component | Technology | Responsibility |
 |-----------|------------|------|
-| **Frontend** | Streamlit (Python) | High-end UI with Glassmorphism |
-| **Database** | DuckDB | Blazing fast OLAP SQL engine |
-| **Logic** | Python 3.10+ | Core processing & analytics |
-| **AI Agent** | Agno + OpenAI (GPT-4o) | Intent analysis & SQL generation |
-| **Visualization**| Plotly | Interactive, responsive charting |
-| **Forecasting** | Scikit-Learn | Linear regression & trend modeling |
-| **Reporting** | FPDF | Professional PDF generation |
+| **Frontend** | Streamlit | Lightweight UI layer (Client) |
+| **Backend** | FastAPI | High-performance API server |
+| **Orchestrator** | Agno | Multi-Agent Team (Supervisor, Analyst, Researcher) |
+| **Database** | MotherDuck / DuckDB | Persistent, scalable SQL engine |
+| **Brain**| OpenAI GPT-4o | Deep reasoning & synthesis |
+| **Protocol** | REST / JSON | Dynamic client-server communication |
+| **Scale** | 100,000+ Users | Decoupled architecture for independent scaling |
 
 ---
 

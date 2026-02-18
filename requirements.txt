@@ -1,10 +1,15 @@
 streamlit
 pandas
 duckdb
-agno
+agno[duckdb,openai,duckduckgo]
 openai
 openpyxl
 plotly
 scikit-learn
 fpdf
 numpy
+fastapi
+uvicorn
+requests
+motherduck
+python-multipart

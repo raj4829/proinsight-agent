@@ -43,6 +43,20 @@
             "priority": 3,
             "passes": false,
             "notes": ""
+        },
+        {
+            "id": "EP-005",
+            "title": "SaaS Refactoring (100K Scale)",
+            "description": "Port project to Client-Server architecture (FastAPI + Streamlit).",
+            "acceptanceCriteria": [
+                "Backend decoupled into FastAPI server",
+                "Frontend refactored to consume JSON API",
+                "Agno Agent Team implemented (Analyst + Researcher)",
+                "Support for MotherDuck persistent connections"
+            ],
+            "priority": 1,
+            "passes": true,
+            "notes": "Refactored to SaaS architecture with decoupled layers."
         }
     ]
 }

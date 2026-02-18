@@ -703,6 +703,21 @@ with tab_datalab:
                 for c in cat_cols:
                     df_lab[c] = df_lab[c].astype(str).str.title()
                 st.success("Categorical columns titles optimized.")
+            
+            if st.button("🛡️ Remove Outliers (IQR)", use_container_width=True):
+                num_cols = df_lab.select_dtypes(include=['number']).columns
+                if len(num_cols) > 0:
+                    initial_rows = len(df_lab)
+                    for col in num_cols:
+                        Q1 = df_lab[col].quantile(0.25)
+                        Q3 = df_lab[col].quantile(0.75)
+                        IQR = Q3 - Q1
+                        df_lab = df_lab[(df_lab[col] >= (Q1 - 1.5 * IQR)) & (df_lab[col] <= (Q3 + 1.5 * IQR))]
+                    st.session_state["datasets"][selected_table] = df_lab
+                    st.success(f"Cleaned! Removed {initial_rows - len(df_lab)} outlier rows.")
+                    st.rerun()
+                else:
+                    st.warning("No numeric columns found for outlier removal.")
     else:
         st.info("Upload data to access the Data Laboratory.")
 

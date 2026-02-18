@@ -1,0 +1,48 @@
+{
+    "project": "ProInsight Elite",
+    "branchName": "main",
+    "description": "Enterprise-grade AI Business Intelligence platform",
+    "userStories": [
+        {
+            "id": "EP-001",
+            "title": "GSD & Ralph Integration",
+            "description": "Integrate advanced meta-prompting systems (GSD + Ralph patterns) for project governance.",
+            "acceptanceCriteria": [
+                "Create prd.json for structured tracking",
+                "Create progress.txt for historical memory",
+                "Ensure .agent/workflows are updated to reflect hybrid system",
+                "Documentation updated in APP_OVERVIEW.md"
+            ],
+            "priority": 1,
+            "passes": true,
+            "notes": "Initial setup complete with GSD and Ralph patterns."
+        },
+        {
+            "id": "EP-002",
+            "title": "Elite Data Lab: Automated Outlier Removal",
+            "description": "As a consultant, I want to automatically remove outliers from data so my forecasts are more accurate.",
+            "acceptanceCriteria": [
+                "Add 'Remove Outliers' button to Data Lab / Cleaning tab",
+                "Implementation uses Z-score or IQR method",
+                "Visual feedback shows how many rows were removed",
+                "Integrated with pro_insight_analyst.py single-file architecture"
+            ],
+            "priority": 2,
+            "passes": true,
+            "notes": "Implemented IQR-based outlier removal in Data Lab."
+        },
+        {
+            "id": "EP-003",
+            "title": "Strategy Hub: Comparative Channel Analysis",
+            "description": "As a user, I want to compare marketing channel efficiency across multiple files.",
+            "acceptanceCriteria": [
+                "New tab or sub-section for 'Comparative Analysis'",
+                "Table/Chart showing ROI/ROAS side-by-side for different campaigns",
+                "AI generates 'Winning Channel' insight based on cost vs revenue"
+            ],
+            "priority": 3,
+            "passes": false,
+            "notes": ""
+        }
+    ]
+}
